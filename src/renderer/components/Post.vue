@@ -21,15 +21,19 @@
     </div>
     <div class="post__footer">
       <em>{{post.date}}</em> |
-      <template v-for="(file, index) in post.files">
-        <em v-bind:key="`fn${index}${file.no}`" v-if="file.filename">File: {{file.file}}</em>,
-      </template>
+      <em v-if="post.files.length">Files:
+        <template v-for="(file, index) in post.files">
+          <span v-bind:key="`fn${index}${file.no}`">{{getFileName(file)}}</span>
+        </template>
+      </em>
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+
+import { last } from "rambda";
 
 export default {
   name: "post",
@@ -42,6 +46,12 @@ export default {
   },
   mounted() {},
   methods: {
+    getFileName(file) {
+      return (
+        `${file.file} [${file.size}]` +
+        (last(this.post.files).file === file.file ? "" : ", ")
+      );
+    },
     ...mapActions(["setViewerMedia"])
   },
   computed: {

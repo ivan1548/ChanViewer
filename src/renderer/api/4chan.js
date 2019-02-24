@@ -5,6 +5,10 @@ import {
 
 import axios from "axios";
 
+import {
+    bytesToSize
+} from "../helper/general"
+
 import FileModel from "../model/file";
 import PostModel from "../model/post";
 import ThreadModel from "../model/thread";
@@ -34,6 +38,9 @@ export default {
     file: {
         filename: "filename",
         ext: "ext",
+        size(data) {
+            return bytesToSize(data.fsize);
+        },
         no: "no",
         tim: "tim",
         width: "w",

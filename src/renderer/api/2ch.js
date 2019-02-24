@@ -7,6 +7,10 @@ import {
     assoc
 } from "rambda";
 
+import {
+    bytesToSize
+} from "../helper/general"
+
 import FileModel from "../model/file";
 import PostModel from "../model/post";
 import ThreadModel from "../model/thread";
@@ -37,6 +41,9 @@ export default {
         },
         ext(data) {
             return "." + data.file.name.split('.').pop()
+        },
+        size(data) {
+            return bytesToSize(data.file.size * 1024);
         },
         no: "num",
         tim: "timestamp",
