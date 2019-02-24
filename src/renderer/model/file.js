@@ -8,7 +8,7 @@ import store from "../store"
 import GenericAPI from "./generic";
 
 export default class FileModel extends GenericAPI {
-    _videoExtensions = [".webm"]
+    _videoExtensions = [".webm", ".mp4"]
 
     constructor(data, board) {
         super()
