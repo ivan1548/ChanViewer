@@ -31,6 +31,8 @@ import { compose, take, drop, reverse, findIndex, isNil, head } from "rambda";
 
 import { mapActions } from "vuex";
 
+import { getThread } from "../helper/cache";
+
 import ThreadModel from "../model/thread";
 
 import Post from "./Post";
@@ -138,9 +140,8 @@ export default {
   },
   methods: {
     load() {
-      this.api.getThread(this.board, this.thread).then(posts => {
-        console.log(posts);
-        const thread = new ThreadModel(posts, this.board);
+      getThread(this.board, this.thread).then(thread => {
+        console.log(thread);
         this.posts = thread.sorted;
         this.files = thread.files;
         this.videos = thread.videos;

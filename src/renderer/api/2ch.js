@@ -8,6 +8,9 @@ import {
 } from "rambda";
 
 import FileModel from "../model/file";
+import PostModel from "../model/post";
+import ThreadModel from "../model/thread";
+import BoardModel from "../model/board";
 
 export default {
     name: "2ch",
@@ -70,17 +73,20 @@ export default {
     },
     getBoards() {
         return axios.get(this.urls.boards).then(response => {
-            return response.data.boards;
+            return map(b => {
+                return new BoardModel(b);
+            })(response.data.boards);
         });
     },
     getBoard(id) {
         return axios.get(this.urls.board(id)).then(response => {
-            // return splitEvery(10, response.data.threads);
             return compose(
                     map((threads, index) => {
                         return {
                             page: index + 1,
-                            threads: threads
+                            threads: map(thread => {
+                                return new PostModel(thread, id);
+                            }, threads)
                         }
                     }),
                     splitEvery(20)
@@ -92,7 +98,7 @@ export default {
         return axios
             .get(this.urls.thread(board, id))
             .then(response => {
-                return head(response.data.threads).posts;
+                return new ThreadModel(head(response.data.threads).posts, board);
             });
     },
     getReplyRef(post) {

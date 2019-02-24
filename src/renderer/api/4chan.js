@@ -1,10 +1,14 @@
 import {
-    isNil
+    isNil,
+    map
 } from "rambda";
 
 import axios from "axios";
 
 import FileModel from "../model/file";
+import PostModel from "../model/post";
+import ThreadModel from "../model/thread";
+import BoardModel from "../model/board";
 
 export default {
     name: "4chan",
@@ -56,19 +60,28 @@ export default {
     },
     getBoards() {
         return axios.get(this.urls.boards).then(response => {
-            return response.data.boards;
+            return map(b => {
+                return new BoardModel(b);
+            })(response.data.boards);
         });
     },
     getBoard(id) {
         return axios.get(this.urls.board(id)).then(response => {
-            return response.data;
+            return map(p => {
+                return {
+                    page: p.page,
+                    threads: map(thread => {
+                        return new PostModel(thread, id);
+                    }, p.threads)
+                }
+            })(response.data);
         });
     },
     getThread(board, id) {
         return axios
             .get(this.urls.thread(board, id))
             .then(response => {
-                return response.data.posts;
+                return new ThreadModel(response.data.posts, board);
             });
     },
     getReplyRef(post) {

@@ -2,13 +2,13 @@
   <div class="row">
     <div v-if="page" class="col col-sm-12">
       <pagination :pages="pages" :currentIndex="pageIndex" @changepage="changePage"></pagination>
-      <div v-for="thread in page.threads" v-bind:key="getThreadId(thread)">
+      <div v-for="thread in page.threads" v-bind:key="thread.no">
         <div class="thread-head">
-          <router-link :to="`/thread/${board}/${getThreadId(thread)}`">{{getThreadId(thread)}}</router-link>
+          <router-link :to="`/thread/${board}/${thread.no}`">{{thread.no}}</router-link>
           <em>Replies: {{thread.replies}}</em> |
           <em>Images: {{thread.images}}</em>
         </div>
-        <post @click.native="goToThread(thread)" :post="getPost(thread)"></post>
+        <post @click.native="goToThread(thread)" :post="thread"></post>
       </div>
       <pagination :pages="pages" :currentIndex="pageIndex" @changepage="changePage"></pagination>
     </div>
@@ -17,6 +17,8 @@
 
 <script>
 import { isNil } from "rambda";
+
+import { getBoard } from "../helper/cache";
 
 import PostModel from "../model/post";
 
@@ -40,7 +42,8 @@ export default {
   },
   methods: {
     load(id) {
-      this.api.getBoard(id).then(pages => {
+      getBoard(id).then(pages => {
+        console.log(pages);
         this.pages = pages;
       });
     },
@@ -51,13 +54,10 @@ export default {
       return new PostModel(thread, this.board);
     },
     goToThread(thread) {
-      this.$router.push(`/thread/${this.board}/${this.getThreadId(thread)}`);
+      this.$router.push(`/thread/${this.board}/${thread.no}`);
     },
     changePage(index) {
       this.pageIndex = index;
-    },
-    getThreadId(thread) {
-      return isNil(thread.no) ? thread.num : thread.no;
     }
   },
   computed: {

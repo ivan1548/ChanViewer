@@ -14,8 +14,11 @@
 </template>
 
 <script>
-import BoardModel from "../model/board";
 import { map } from "rambda";
+
+import { getBoards } from "../helper/cache";
+
+import BoardModel from "../model/board";
 
 export default {
   name: "landing-page",
@@ -30,10 +33,8 @@ export default {
   },
   methods: {
     load() {
-      this.api.getBoards().then(boards => {
-        this.boards = map(b => {
-          return new BoardModel(b);
-        })(boards);
+      getBoards().then(boards => {
+        this.boards = boards;
       });
     },
     open(link) {
