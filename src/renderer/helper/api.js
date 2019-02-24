@@ -9,7 +9,7 @@ availableApis[api4.name] = api4;
 availableApis[api2.name] = api2;
 
 export function init() {
-    store.dispatch("setApi", availableApis[store.state.Settings.api])
+    return store.dispatch("setApi", availableApis[store.state.Settings.api])
 }
 
 export {

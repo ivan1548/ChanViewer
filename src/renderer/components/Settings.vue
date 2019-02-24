@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     saveApi() {
-      update("api", this.apiModel).then(_ => {
+      update("api", this.apiModel.name).then(_ => {
         this.setApi(this.apiModel);
       });
     },

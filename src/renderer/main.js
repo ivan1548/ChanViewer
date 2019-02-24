@@ -13,6 +13,9 @@ if (!process.env.IS_WEB) Vue.use(require("vue-electron"));
 Vue.http = Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
 
+import preload from "./init/preload";
+
+
 // electron.ipcRenderer.send("setProxy", "SOCKS5://127.0.0.1:9050");
 
 // electron.ipcRenderer.on("proxyAvailable", function(event, message) {
@@ -24,12 +27,14 @@ Vue.config.productionTip = false;
 //   });
 // });
 
-/* eslint-disable no-new */
-new Vue({
-  components: {
-    App
-  },
-  router,
-  store,
-  template: "<App/>"
-}).$mount("#app");
+preload().then(() => {
+  /* eslint-disable no-new */
+  new Vue({
+    components: {
+      App
+    },
+    router,
+    store,
+    template: "<App/>"
+  }).$mount("#app");
+})

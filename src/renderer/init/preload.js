@@ -7,5 +7,8 @@ import {
 } from "../helper/api"
 
 
-initSettings();
-initApi();
+export default function preload() {
+    return initSettings().then(() => {
+        return initApi();
+    });
+}

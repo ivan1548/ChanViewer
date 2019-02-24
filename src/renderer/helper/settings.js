@@ -14,9 +14,9 @@ import {
 export function init() {
     const settingDefaults = store.state.Settings;
 
-    compose(
+    const proms = compose(
         map(key => {
-            settings.findOne({
+            return settings.findOne({
                 _id: key
             }).then(doc => {
                 if (isNil(doc)) {
@@ -27,13 +27,15 @@ export function init() {
                 } else {
                     store.dispatch("setSettingsItem", {
                         key,
-                        value: settingDefaults[key]
+                        value: doc.value
                     });
                 }
             })
         }),
         keys
     )(settingDefaults)
+
+    return Promise.all(proms);
 };
 
 export function update(key, value) {
@@ -44,9 +46,13 @@ export function update(key, value) {
             console.log("error", "setting not found")
         } else {
             settings.update({
-                _id: key,
-                value: value
-            }).then(() => {
+                _id: key
+            }, {
+                $set: {
+                    value: value
+                }
+            }).then((n) => {
+                console.log(n)
                 store.dispatch("setSettingsItem", {
                     key,
                     value
