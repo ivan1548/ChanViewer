@@ -31,7 +31,7 @@ export default {
             return data.file.name.replace(/\.[^/.]+$/, "")
         },
         ext(data) {
-            return data.file.name.split('.').pop()
+            return "." + data.file.name.split('.').pop()
         },
         no: "num",
         tim: "timestamp",
@@ -62,10 +62,10 @@ export default {
             return `https://2ch.hk/${board}/res/${id}.json`
         },
         thumbnail(file) {
-            return `https://2ch.hk/${file.thumbnail.path}`
+            return `https://2ch.hk${file.thumbnail.path}`
         },
         file(file) {
-            return `https://2ch.hk/${file.path}`
+            return `https://2ch.hk${file.path}`
         }
     },
     getBoards() {
