@@ -141,7 +141,6 @@ export default {
   methods: {
     load() {
       getThread(this.board, this.thread).then(thread => {
-        console.log(thread);
         this.posts = thread.sorted;
         this.files = thread.files;
         this.videos = thread.videos;

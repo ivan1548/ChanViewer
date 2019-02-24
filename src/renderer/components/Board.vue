@@ -43,7 +43,6 @@ export default {
   methods: {
     load(id) {
       getBoard(id).then(pages => {
-        console.log(pages);
         this.pages = pages;
       });
     },
