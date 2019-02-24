@@ -27,7 +27,9 @@ export default {
         subject: "subject",
         date: "date",
         name: "name",
-        message: "comment"
+        message: "comment",
+        post_count: "posts_count",
+        file_count: "files_count"
     },
     file: {
         filename(data) {

@@ -27,7 +27,9 @@ export default {
         },
         date: "now",
         name: "name",
-        message: "com"
+        message: "com",
+        post_count: "replies",
+        file_count: "images"
     },
     file: {
         filename: "filename",

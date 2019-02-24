@@ -5,8 +5,8 @@
       <div v-for="thread in page.threads" v-bind:key="thread.no">
         <div class="thread-head">
           <router-link :to="`/thread/${board}/${thread.no}`">{{thread.no}}</router-link>
-          <em>Replies: {{thread.replies}}</em> |
-          <em>Images: {{thread.images}}</em>
+          <em>Replies: {{thread.post_count}}</em> |
+          <em>Files: {{thread.file_count}}</em>
         </div>
         <post @click.native="goToThread(thread)" :post="thread"></post>
       </div>
@@ -49,9 +49,6 @@ export default {
     },
     open(link) {
       this.$electron.shell.openExternal(link);
-    },
-    getPost(thread) {
-      return new PostModel(thread, this.board);
     },
     goToThread(thread) {
       this.$router.push(`/thread/${this.board}/${thread.no}`);
