@@ -1,0 +1,23 @@
+nav.main-nav {
+    height: 30px;
+
+    .nav-container {
+        margin: 0;
+        padding: 0;
+
+        .nav-links {
+            li a {
+                // background: #4caf50;
+
+                &:hover,
+                &:active,
+                &:visited,
+                &:focus,
+                &.router-link-exact-active {
+                    opacity: 1;
+                    background: #ffd454;
+                }
+            }
+        }
+    }
+}

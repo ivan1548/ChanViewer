@@ -1,0 +1,11 @@
+@import "node_modules/mustard-ui/src/scss/mustard-ui.scss";
+@import "./fonts/capicon/style.css";
+@import "./fonts/capicon/extend.scss";
+@import "./components/nav.scss";
+@import "./components/thread.scss";
+@import "./components/post.scss";
+
+.thread-list {
+    column-count: 3;
+    padding: 0 1rem;
+}
