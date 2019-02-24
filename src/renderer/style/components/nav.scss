@@ -1,4 +1,12 @@
+$nav-height: 30px;
+
+body {
+    padding-top: $nav-height;
+}
+
 nav.main-nav {
+    position: fixed;
+    top: 0;
     height: 30px;
 
     .nav-container {

@@ -9,3 +9,20 @@
     column-count: 3;
     padding: 0 1rem;
 }
+
+.tooltip-text {
+    z-index: 1;
+
+    font-size: 0.5rem;
+    min-width: 100px;
+    padding: 5px 10px;
+
+    &__bottom {
+        bottom: -100%;
+
+        &:after {
+            top: -72%;
+            transform: translateX(-50%) rotate(180deg);
+        }
+    }
+}

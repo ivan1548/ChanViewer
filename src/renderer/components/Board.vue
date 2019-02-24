@@ -7,8 +7,9 @@
           <router-link :to="`/thread/${board}/${thread.no}`">{{thread.no}}</router-link>
           <em>Replies: {{thread.post_count}}</em> |
           <em>Files: {{thread.file_count}}</em>
+          <a href="#" @click="goToThread(thread)">Open</a>
         </div>
-        <post @click.native="goToThread(thread)" :post="thread"></post>
+        <post :post="thread"></post>
       </div>
       <pagination :pages="pages" :currentIndex="pageIndex" @changepage="changePage"></pagination>
     </div>
@@ -35,12 +36,21 @@ export default {
       pageIndex: 1
     };
   },
+  beforeRouteUpdate(to, from, next) {
+    if (to.path !== from.path || !isNil(to.query.refresh)) {
+      this.init();
+    }
+    next();
+  },
   created() {
-    this.board = this.$route.params.id;
-    this.pageIndex = this.$route.params.page;
-    this.load(this.$route.params.id);
+    this.init();
   },
   methods: {
+    init() {
+      this.board = this.$route.params.id;
+      this.pageIndex = this.$route.params.page;
+      this.load(this.$route.params.id);
+    },
     load(id) {
       getBoard(id).then(pages => {
         this.pages = pages;

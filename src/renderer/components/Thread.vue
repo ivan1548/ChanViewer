@@ -53,16 +53,13 @@ export default {
     };
   },
   beforeRouteUpdate(to, from, next) {
-    if (to.path !== from.path) {
-      this.load();
+    if (to.path !== from.path || !isNil(to.query.refresh)) {
+      this.init();
     }
     next();
   },
   mounted() {
-    this.board = this.$route.params.board;
-    this.thread = this.$route.params.id;
-    this.setViewerMedia(null);
-    this.load();
+    this.init();
 
     window.addEventListener("scroll", e => {
       if (window.scrollY > 40) {
@@ -139,6 +136,12 @@ export default {
     });
   },
   methods: {
+    init() {
+      this.board = this.$route.params.board;
+      this.thread = this.$route.params.id;
+      this.setViewerMedia(null);
+      this.load();
+    },
     load() {
       getThread(this.board, this.thread).then(thread => {
         this.posts = thread.sorted;

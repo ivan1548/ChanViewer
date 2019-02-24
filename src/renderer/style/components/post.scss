@@ -60,7 +60,7 @@ $post-background: #ebebeb;
         width: 50%;
 
         &.scrolled {
-            top: 5px;
+            top: $nav-height;
         }
 
         video {

@@ -1,3 +1,7 @@
+import {
+    keys
+} from "rambda";
+
 const state = {}
 
 const mutations = {
@@ -6,6 +10,11 @@ const mutations = {
         value
     }) {
         state[key] = value;
+    },
+    CLEAR_CACHE(state) {
+        keys(state).forEach(k => {
+            state[k] = null
+        })
     },
 }
 
@@ -20,6 +29,11 @@ const actions = {
             key,
             value
         })
+    },
+    clearCache({
+        commit
+    }) {
+        commit('CLEAR_CACHE')
     }
 }
 
