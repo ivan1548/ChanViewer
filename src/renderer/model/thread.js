@@ -16,6 +16,7 @@ import Post from "./post";
 
 export default class ThreadModel {
     _replyNos = [];
+    created = [];
 
     constructor(posts, board) {
 
@@ -84,7 +85,18 @@ export default class ThreadModel {
     }
 
     _convertPost(post, posts) {
-        const p = new Post(post, this.board);
-        return p.setReplies(this._replies(p, posts));
+        const formatted = new Post(post, this.board);
+
+        const index = this.created.findIndex(p => {
+            return formatted.no === p.no;
+        });
+
+        if (index > -1) {
+            return formatted;
+        } else {
+            this.created.push(formatted);
+            return formatted.setReplies(this._replies(formatted, posts));
+        }
+
     }
 }

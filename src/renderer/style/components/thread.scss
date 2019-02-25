@@ -1,3 +1,14 @@
 .thread-head {
     font-size: 0.6rem;
+    padding-bottom: 3px;
+
+    &__actions {
+        display: inline-block;
+        margin-left: 5px;
+
+        button {
+            margin: 0
+        }
+    }
+
 }

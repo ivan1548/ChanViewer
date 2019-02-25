@@ -3,17 +3,22 @@
     <div class="nav-container">
       <ul class="nav-links">
         <li>
-          <router-link to="/settings">
+          <a @click="toggleSidebar" class="toolbar-item" href="#">
+            <i class="icon-bookshelf"></i>
+          </a>
+        </li>
+        <li>
+          <router-link to="/settings" class="toolbar-item">
             <i class="icon-settings"></i>
           </router-link>
         </li>
         <li>
-          <router-link to="/">
+          <router-link to="/" class="toolbar-item">
             <i class="icon-home"></i>
           </router-link>
         </li>
         <li>
-          <a @click="$router.go(-1)" href="#">
+          <a class="toolbar-item" @click="$router.go(-1)" href="#">
             <i class="icon-arrow-left"></i>
           </a>
         </li>
@@ -34,6 +39,9 @@ import { mapActions } from "vuex";
 export default {
   name: "toolbar",
   methods: {
+    toggleSidebar() {
+      this.$emit("togglesidebar");
+    },
     refreshPage() {
       this.clearCache().then(() => {
         this.$router.push({

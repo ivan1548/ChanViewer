@@ -7,7 +7,12 @@
           <router-link :to="`/thread/${board}/${thread.no}`">{{thread.no}}</router-link>
           <em>Replies: {{thread.post_count}}</em> |
           <em>Files: {{thread.file_count}}</em>
-          <a href="#" @click="goToThread(thread)">Open</a>
+          <div class="thread-head__actions">
+            <button class="button-tiny button-info" @click="goToThread(thread)">Open</button>
+            <button class="button-tiny" @click="addBookshelfItem(thread)">
+              <i class="icon-favorite"></i>
+            </button>
+          </div>
         </div>
         <post :post="thread"></post>
       </div>
@@ -18,6 +23,7 @@
 
 <script>
 import { isNil } from "rambda";
+import { mapActions } from "vuex";
 
 import { getBoard } from "../helper/cache";
 
@@ -64,7 +70,8 @@ export default {
     },
     changePage(index) {
       this.pageIndex = index;
-    }
+    },
+    ...mapActions(["addBookshelfItem"])
   },
   computed: {
     page() {
