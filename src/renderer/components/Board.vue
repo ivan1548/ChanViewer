@@ -44,9 +44,11 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     if (to.path !== from.path || !isNil(to.query.refresh)) {
+      next();
       this.init();
+    } else {
+      next();
     }
-    next();
   },
   created() {
     this.init();
