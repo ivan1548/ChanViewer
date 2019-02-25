@@ -20,7 +20,7 @@ export default {
   name: "chan-viewer",
   data() {
     return {
-      sidebar: true
+      sidebar: false
     };
   },
   methods: {
