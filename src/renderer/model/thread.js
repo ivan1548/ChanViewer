@@ -70,11 +70,11 @@ export default class ThreadModel {
         const ref = api.getReplyRef(post);
 
         const replies = filter(p => {
-            return includes(ref, p.com);
+            return includes(ref, api.post.message(p));
         }, posts);
 
         const _replyNos = map(p => {
-            return p.no;
+            return api.post.no(p);
         }, replies);
 
         this._replyNos = uniq(concat(this._replyNos, _replyNos));

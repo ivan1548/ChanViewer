@@ -25,7 +25,9 @@ export default {
         }
     },
     post: {
-        no: "num",
+        no(data) {
+            return data["num"]
+        },
         tim: "timestamp",
         subject: "subject",
         date: "date",
@@ -103,7 +105,7 @@ export default {
             });
     },
     getReplyRef(post) {
-        return "#p" + post.no;
+        return `data-num="${post.no}"`;
     },
     getFiles(data, board) {
         if (data.files.length > 0) {

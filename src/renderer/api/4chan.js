@@ -26,7 +26,9 @@ export default {
         }
     },
     post: {
-        no: "no",
+        no(data) {
+            return data["no"]
+        },
         tim: "tim",
         subject(data) {
             return isNil(data["sub"]) ? "" : data["sub"]
