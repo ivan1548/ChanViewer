@@ -2,7 +2,8 @@ import axios from "axios";
 import {
     map,
     head,
-    assoc
+    assoc,
+    isNil
 } from "rambda";
 
 import {
@@ -29,7 +30,9 @@ export default {
         subject: "subject",
         date: "date",
         name: "name",
-        message: "comment",
+        message(data) {
+            return isNil(data["comment"]) ? "" : data["comment"]
+        },
         post_count: "posts_count",
         file_count: "files_count"
     },

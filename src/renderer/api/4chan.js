@@ -33,7 +33,9 @@ export default {
         },
         date: "now",
         name: "name",
-        message: "com",
+        message(data) {
+            return isNil(data["com"]) ? "" : data["com"]
+        },
         post_count: "replies",
         file_count: "images"
     },
