@@ -1,8 +1,6 @@
 import axios from "axios";
 import {
-    compose,
     map,
-    splitEvery,
     head,
     assoc
 } from "rambda";
@@ -89,18 +87,9 @@ export default {
     },
     getBoard(id) {
         return axios.get(this.urls.board(id)).then(response => {
-            return compose(
-                    map((threads, index) => {
-                        return {
-                            page: index + 1,
-                            threads: map(thread => {
-                                return new PostModel(thread, id);
-                            }, threads)
-                        }
-                    }),
-                    splitEvery(20)
-                )
-                (response.data.threads)
+            return map(thread => {
+                return new PostModel(thread, id);
+            })(response.data.threads);
         });
     },
     getThread(board, id) {

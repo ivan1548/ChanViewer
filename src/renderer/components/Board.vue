@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div v-if="page" class="col col-sm-12">
-      <pagination :pages="pages" :currentIndex="pageIndex" @changepage="changePage"></pagination>
+      <pagination :pages="pages" :currentPage="currentPage" @changepage="changePage"></pagination>
       <div v-for="thread in page.threads" v-bind:key="thread.no">
         <div class="thread-head">
           <router-link :to="`/thread/${board}/${thread.no}`">{{thread.no}}</router-link>
@@ -16,13 +16,13 @@
         </div>
         <post :post="thread"></post>
       </div>
-      <pagination :pages="pages" :currentIndex="pageIndex" @changepage="changePage"></pagination>
+      <pagination :pages="pages" :currentPage="currentPage" @changepage="changePage"></pagination>
     </div>
   </div>
 </template>
 
 <script>
-import { isNil } from "rambda";
+import { isNil, compose, map, splitEvery } from "rambda";
 import { mapActions } from "vuex";
 
 import { getBoard } from "../helper/cache";
@@ -38,8 +38,8 @@ export default {
   data() {
     return {
       board: false,
-      pages: [],
-      pageIndex: 1
+      currentPage: 1,
+      threads: []
     };
   },
   beforeRouteUpdate(to, from, next) {
@@ -56,12 +56,12 @@ export default {
   methods: {
     init() {
       this.board = this.$route.params.id;
-      this.pageIndex = this.$route.params.page;
+      this.currentPage = this.$route.params.page;
       this.load(this.$route.params.id);
     },
     load(id) {
-      getBoard(id).then(pages => {
-        this.pages = pages;
+      getBoard(id).then(threads => {
+        this.threads = threads;
       });
     },
     open(link) {
@@ -71,13 +71,24 @@ export default {
       this.$router.push(`/thread/${this.board}/${thread.no}`);
     },
     changePage(index) {
-      this.pageIndex = index;
+      this.currentPage = index;
     },
     ...mapActions(["addBookshelfItem"])
   },
   computed: {
+    pages() {
+      return compose(
+        map((threads, index) => {
+          return {
+            pageNumber: index + 1,
+            threads: threads
+          };
+        }),
+        splitEvery(20)
+      )(this.threads);
+    },
     page() {
-      return this.pages[this.pageIndex - 1];
+      return this.pages[this.currentPage - 1];
     },
     api() {
       return this.$store.state.Api.data;

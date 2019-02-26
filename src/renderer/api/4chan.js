@@ -1,6 +1,8 @@
 import {
     isNil,
-    map
+    map,
+    compose,
+    flatten
 } from "rambda";
 
 import axios from "axios";
@@ -76,14 +78,13 @@ export default {
     },
     getBoard(id) {
         return axios.get(this.urls.board(id)).then(response => {
-            return map(p => {
-                return {
-                    page: p.page,
-                    threads: map(thread => {
+            return compose(
+                flatten,
+                map(p => {
+                    return map(thread => {
                         return new PostModel(thread, id);
                     }, p.threads)
-                }
-            })(response.data);
+                }))(response.data)
         });
     },
     getThread(board, id) {

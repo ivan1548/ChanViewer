@@ -6,7 +6,11 @@
       </a>
     </li>
     <li v-for="(p, index) in pages" v-bind:key="index">
-      <a v-bind:class="{ active: isActive(p)}" @click="changePage(p.page)" href="#">{{p.page}}</a>
+      <a
+        v-bind:class="{ active: isActive(p)}"
+        @click="changePage(p.pageNumber)"
+        href="#"
+      >{{p.pageNumber}}</a>
     </li>
     <li v-if="showNext">
       <a @click="nextPage()" href="#">
@@ -24,28 +28,29 @@ export default {
   },
   props: {
     pages: Array,
-    currentIndex: [Number, String]
+    currentPage: [Number, String]
   },
   methods: {
-    changePage(index) {
-      this.$emit("changepage", index);
+    changePage(pageNumber) {
+      this.$emit("changepage", pageNumber);
     },
     nextPage() {
-      this.changePage(+this.currentIndex + 1);
+      console.log(this.currentPage);
+      this.changePage(+this.currentPage + 1);
     },
     prevPage() {
-      this.changePage(+this.currentIndex - 1);
+      this.changePage(+this.currentPage - 1);
     },
     isActive(page) {
-      return page.page == this.currentIndex;
+      return page.pageNumber == this.currentPage;
     }
   },
   computed: {
     showPrev() {
-      return this.currentIndex != 1;
+      return this.currentPage != 1;
     },
     showNext() {
-      return this.currentIndex != this.pages.length;
+      return this.currentPage != this.pages.length;
     }
   }
 };
