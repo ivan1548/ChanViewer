@@ -2,7 +2,9 @@ import {
     includes
 } from "rambda";
 
-// import api from "../api/4chan";
+import {
+    randomString
+} from "../helper/general";
 import store from "../store"
 
 import GenericAPI from "./generic";
@@ -24,6 +26,6 @@ export default class FileModel extends GenericAPI {
         this.thumbnail.src = api.urls.thumbnail(this);
 
         this.file = `${this.filename}${this.ext}`;
-        this.id = this.tim + this.no + this.filename;
+        this.id = randomString(16);
     }
 }

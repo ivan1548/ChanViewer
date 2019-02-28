@@ -60,18 +60,44 @@ export default {
       next();
     }
   },
+  destroyed() {
+    document.removeEventListener("keydown", this.keydownEvents);
+    window.removeEventListener("scroll", this.scrollEvent);
+  },
   mounted() {
     this.init();
 
-    window.addEventListener("scroll", e => {
-      if (window.scrollY > 40) {
-        this.scrolled = true;
-      } else {
-        this.scrolled = false;
-      }
+    window.addEventListener("scroll", this.scrollEvent);
+    document.addEventListener("keydown", this.keydownEvents);
+  },
+  updated() {
+    const quotes = document.querySelectorAll(".quotelink");
+    quotes.forEach(el => {
+      el.addEventListener("click", () => {
+        const id = drop(2, el.getAttribute("href"));
+        const to = document.getElementById(id);
+        to.scrollIntoView();
+        // const clone = to.cloneNode();
+      });
     });
-
-    document.addEventListener("keydown", event => {
+  },
+  methods: {
+    init() {
+      this.board = this.$route.params.board;
+      this.thread = this.$route.params.id;
+      this.setViewerMedia(null);
+      this.load();
+    },
+    load() {
+      getThread(this.board, this.thread).then(thread => {
+        this.posts = thread.sorted;
+        this.files = thread.files;
+        this.videos = thread.videos;
+        this.images = thread.images;
+        this.op = head(thread.sorted);
+      });
+    },
+    keydownEvents(event) {
       var tag = event.target.tagName.toLowerCase();
       if (tag != "input" && tag != "textarea") {
         switch (event.which) {
@@ -124,34 +150,13 @@ export default {
             break;
         }
       }
-    });
-  },
-  updated() {
-    const quotes = document.querySelectorAll(".quotelink");
-    quotes.forEach(el => {
-      el.addEventListener("click", () => {
-        const id = drop(2, el.getAttribute("href"));
-        const to = document.getElementById(id);
-        to.scrollIntoView();
-        // const clone = to.cloneNode();
-      });
-    });
-  },
-  methods: {
-    init() {
-      this.board = this.$route.params.board;
-      this.thread = this.$route.params.id;
-      this.setViewerMedia(null);
-      this.load();
     },
-    load() {
-      getThread(this.board, this.thread).then(thread => {
-        this.posts = thread.sorted;
-        this.files = thread.files;
-        this.videos = thread.videos;
-        this.images = thread.images;
-        this.op = head(thread.sorted);
-      });
+    scrollEvent(event) {
+      if (window.scrollY > 40) {
+        this.scrolled = true;
+      } else {
+        this.scrolled = false;
+      }
     },
     open(link) {
       this.$electron.shell.openExternal(link);
@@ -163,7 +168,9 @@ export default {
         return v.id == this.viewerMedia.id;
       });
 
-      if (index + 1 !== this.media.length) {
+      console.log(index, "next");
+
+      if (index !== -1 && index + 1 !== this.videos.length) {
         const m = this.videos[index + 1];
         this.setViewerMedia(m);
       }
@@ -175,12 +182,16 @@ export default {
         return v.id == this.viewerMedia.id;
       });
 
-      if (index !== 0) {
+      console.log(index, "prev");
+
+      if (index !== -1 && index !== 0) {
         const m = this.videos[index - 1];
         this.setViewerMedia(m);
       }
     },
     togglePlay() {
+      if (isNil(this.$refs.video)) return;
+
       if (this.$refs.video.paused) {
         this.$refs.video.play();
       } else {
@@ -217,7 +228,7 @@ export default {
     viewerMedia(val, old) {
       if (!isNil(val)) {
         const el = document.getElementById(this.viewerMedia.no);
-        el.scrollIntoView();
+        if (el) el.scrollIntoView();
       }
     }
   }
