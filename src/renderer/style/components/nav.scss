@@ -26,6 +26,15 @@ nav.main-nav {
                     background: #ffd454;
                 }
             }
+
+            select {
+                padding: 0 25px 0 10px;
+                border-radius: 0;
+                height: 100%;
+                border: none;
+
+                background-color: inherit;
+            }
         }
     }
 }

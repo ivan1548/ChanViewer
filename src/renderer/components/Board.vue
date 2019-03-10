@@ -14,7 +14,7 @@
           <em>Files: {{thread.file_count}}</em>
           <div class="thread-head__actions">
             <button class="button-tiny button-info" @click="goToThread(thread)">Open</button>
-            <button class="button-tiny" @click="addBookshelfItem(thread)">
+            <button class="button-tiny button-info" @click="addBookshelfItem(thread)">
               <i class="icon-favorite"></i>
             </button>
           </div>

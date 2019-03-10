@@ -29,7 +29,6 @@ export default {
     };
   },
   created() {
-    console.log(availableApis);
     this.apis = values(availableApis);
     this.apiModel = this.api;
   },

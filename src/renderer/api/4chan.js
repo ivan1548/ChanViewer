@@ -16,7 +16,7 @@ import PostModel from "../model/post";
 import ThreadModel from "../model/thread";
 import BoardModel from "../model/board";
 
-export default {
+const api = {
     name: "4chan",
     board: {
         id: "board",
@@ -86,7 +86,7 @@ export default {
                 flatten,
                 map(p => {
                     return map(thread => {
-                        return new PostModel(thread, id);
+                        return new PostModel(api, thread, id);
                     }, p.threads)
                 }))(response.data)
         });
@@ -95,7 +95,7 @@ export default {
         return axios
             .get(this.urls.thread(board, id))
             .then(response => {
-                return new ThreadModel(response.data.posts, board);
+                return new ThreadModel(api, response.data.posts, board);
             });
     },
     getReplyRef(post) {
@@ -103,8 +103,10 @@ export default {
     },
     getFiles(data, board) {
         if (data.filename) {
-            return [new FileModel(data, board)];
+            return [new FileModel(api, data, board)];
         }
         return []
     }
 }
+
+export default api;

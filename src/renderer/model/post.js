@@ -4,7 +4,6 @@ import {
     any
 } from "rambda";
 
-// import api from "../api/4chan";
 import store from "../store"
 
 import GenericAPI from "./generic";
@@ -14,14 +13,14 @@ export default class PostModel extends GenericAPI {
     totalReplies
     files = []
 
-    constructor(data, board) {
+    constructor(api, data, board) {
         super();
-        const api = store.state.Api.data;
+        this.api = api;
         this.board = board;
 
-        this.setApiFields(api.post, data)
+        this.setApiFields(this.api.post, data)
 
-        this.files = api.getFiles(data, board)
+        this.files = this.api.getFiles(data, board)
 
         this.hasVideo = any(f => {
             return f.isVideo;

@@ -7,9 +7,19 @@ import {
 
 import store from "../store";
 
+import { availableApis } from "../helper/api";
+
 const BOARDS = "boards"
 const BOARD = "board"
 const THREAD = "thread"
+
+function getApi(api) {
+    if (isNil(api)) {
+        return store.state.Api.data;
+    }
+
+    return availableApis[api];
+}
 
 function getKey(prefix, key, ...extra) {
     return compose(
@@ -25,8 +35,8 @@ function updateCache(key, value) {
     });
 }
 
-function get(name, getter, attrs = []) {
-    const api = store.state.Api.data;
+function get(apival, name, getter, attrs = []) {
+    const api = getApi(apival);
     const cache = store.state.Cache;
 
     const key = getKey(api.name, name, ...attrs);
@@ -42,12 +52,12 @@ function get(name, getter, attrs = []) {
 }
 
 export function getBoards() {
-    return get(BOARDS, "getBoards")
+    return get(null, BOARDS, "getBoards")
 }
 
 export function getBoard(id) {
-    return get(BOARD, "getBoard", [id])
+    return get(null, BOARD, "getBoard", [id])
 }
-export function getThread(board, id) {
-    return get(THREAD, "getThread", [board, id])
+export function getThread(board, id, api) {
+    return get(api, THREAD, "getThread", [board, id])
 }

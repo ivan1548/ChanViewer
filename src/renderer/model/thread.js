@@ -9,7 +9,6 @@ import {
     flatten
 } from "rambda";
 
-// import api from "../api/4chan";
 import store from "../store"
 
 import Post from "./post";
@@ -18,8 +17,8 @@ export default class ThreadModel {
     _replyNos = [];
     created = [];
 
-    constructor(posts, board) {
-
+    constructor(api, posts, board) {
+        this.api = api;
         this.original = posts;
         this.board = board;
 
@@ -85,7 +84,7 @@ export default class ThreadModel {
     }
 
     _convertPost(post, posts) {
-        const formatted = new Post(post, this.board);
+        const formatted = new Post(this.api, post, this.board);
 
         const index = this.created.findIndex(p => {
             return formatted.no === p.no;

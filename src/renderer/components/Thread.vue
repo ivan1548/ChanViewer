@@ -89,7 +89,8 @@ export default {
       this.load();
     },
     load() {
-      getThread(this.board, this.thread).then(thread => {
+      const api = this.$route.query.api;
+      getThread(this.board, this.thread, api).then(thread => {
         this.posts = thread.sorted;
         this.files = thread.files;
         this.videos = thread.videos;

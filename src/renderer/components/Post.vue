@@ -3,7 +3,9 @@
     <div class="post__head">
       <b>{{post.name}}</b>
       <em>No:{{post.no}}</em>
-      <b v-if="post.subject" class="subject">: {{post.subject}}</b>
+      <b v-if="post.subject" class="subject">
+        <span v-html="post.subject">{{post.subject}}</span>
+      </b>
     </div>
     <div class="post__body">
       <div class="thumbnail" v-bind:class="{multiple: multipleMedia}">

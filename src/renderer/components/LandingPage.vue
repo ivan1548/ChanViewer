@@ -32,6 +32,10 @@ export default {
       filterInput: ""
     };
   },
+  beforeRouteUpdate(to, from, next) {
+    this.load();
+    next();
+  },
   created() {
     this.load();
   },

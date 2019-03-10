@@ -29,15 +29,36 @@
           </a>
         </li>
       </ul>
+      <ul class="nav-links">
+        <li>
+          <select v-model="apiModel" @change="saveApi">
+            <option v-for="(api) in apis" v-bind:key="api.name" :value="api">{{api.name}}</option>
+          </select>
+        </li>
+      </ul>
     </div>
   </nav>
 </template>
 
 <script>
+import { isNil, values } from "rambda";
+
 import { mapActions } from "vuex";
+
+import { availableApis } from "../helper/api";
 
 export default {
   name: "toolbar",
+  data() {
+    return {
+      apis: [],
+      apiModel: false
+    };
+  },
+  created() {
+    this.apis = values(availableApis);
+    this.apiModel = this.api;
+  },
   methods: {
     toggleSidebar() {
       this.$emit("togglesidebar");
@@ -53,7 +74,20 @@ export default {
         });
       });
     },
-    ...mapActions(["clearCache"])
+    saveApi() {
+      this.setApi(this.apiModel).then(_ => {
+        this.$router.push("/");
+      });
+    },
+    ...mapActions(["clearCache", "setApi"])
+  },
+  computed: {
+    api() {
+      return this.$store.state.Api.data;
+    },
+    settings() {
+      return this.$store.state.Settings;
+    }
   }
 };
 </script>

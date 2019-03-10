@@ -12,9 +12,8 @@ import GenericAPI from "./generic";
 export default class FileModel extends GenericAPI {
     _videoExtensions = [".webm", ".mp4"]
 
-    constructor(data, board) {
+    constructor(api, data, board) {
         super()
-        const api = store.state.Api.data;
 
         this.board = board;
 

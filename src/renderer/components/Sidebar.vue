@@ -3,7 +3,7 @@
     <h6 class="sidebar-category">Threads</h6>
     <ul class="sidebar-links">
       <li v-for="thread in threads" v-bind:key="thread.no">
-        <router-link :to="`/thread/${thread.board}/${thread.no}`">
+        <router-link :to="`/thread/${thread.board}/${thread.no}?api=${thread.api.name}`">
           <div v-if="thread.subject">{{thread.subject}}</div>
           <div>{{thread.no}}</div>
         </router-link>
